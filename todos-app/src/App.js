@@ -9,12 +9,26 @@ function App() {
   { rowNumber: 3, rowDescription: "Go to Gym", rowAssigned: "User One" }]);
 
   const addToDo = (description, assigned) => {
+    let rowNumber = 0;
+
     if (todos.length > 0) {
-      const newTodo = { rowNumber: todos.length + 1, rowDescription: description, rowAssigned: assigned };
-      setTodo(t => [...t, newTodo]);
+      rowNumber = todos[todos.length - 1].rowNumber + 1;
+    } else {
+      rowNumber = 1;
     }
+    const newTodo = { rowNumber: rowNumber, rowDescription: description, rowAssigned: assigned };
+    setTodo(t => [...t, newTodo]);
 
   }
+
+  const deleteTodo = (deleteTodoRowNumber) => {
+    let filtered = todos.filter(function (value) {
+      console.log('row number from delete function', value.rowNumber);
+      return value.rowNumber !== deleteTodoRowNumber;
+    });
+    setTodo(filtered);
+  }
+
   return (
     <div className="mt-5 container" >
       <div className="card">
@@ -22,7 +36,8 @@ function App() {
           Your Todo's
         </div>
         <div className="card-body">
-          <TodoTable todos={todos} />
+          <TodoTable todos={todos}
+            deleteTodo={deleteTodo} />
           <button className="btn btn-primary" onClick={addToDo}>Add Todo</button>
         </div>
       </div>
